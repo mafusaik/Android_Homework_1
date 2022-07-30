@@ -1,4 +1,4 @@
-package com.example.android_homework_1
+package com.example.android_homework_1.entity
 
 
 class Scalar constructor() : Var() {

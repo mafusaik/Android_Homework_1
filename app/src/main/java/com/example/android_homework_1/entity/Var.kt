@@ -1,5 +1,6 @@
-package com.example.android_homework_1
+package com.example.android_homework_1.entity
 
+import com.example.android_homework_1.interfaces.Operation
 
 abstract class Var : Operation {
 
@@ -21,16 +22,6 @@ abstract class Var : Operation {
     override fun div(other: Var?): Var? {
         println("Incorrect operation $this / $other")
         return null
-    }
-
-    companion object {
-        fun createVar(stringVar: String): Var? {
-            var result: Var? = null
-            if (stringVar.matches(Regex("-?[0-9]+(\\.[0-9]+)?"))) {
-                result = Scalar(stringVar)
-            }
-            return result
-        }
     }
 
     override fun toString(): String {

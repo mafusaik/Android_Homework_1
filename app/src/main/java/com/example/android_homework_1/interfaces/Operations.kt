@@ -1,4 +1,6 @@
-package com.example.android_homework_1
+package com.example.android_homework_1.interfaces
+
+import com.example.android_homework_1.entity.Var
 
 interface Operation {
     fun add(other: Var?): Var?
