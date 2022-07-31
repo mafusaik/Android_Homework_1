@@ -6,39 +6,41 @@ import com.example.android_homework_1.exception.CalcException
 import com.example.android_homework_1.repository.VarMapRepository
 
 
-
 class Parser(private var repository: VarMapRepository, private var varCreator: VarCreator) {
 
-    private val priorityMap: MutableMap<String, Int> = mutableMapOf (
-        "=" to 0,
-        "+" to 1,
-        "-" to 1,
-        "*" to 2,
-        "/" to 2
-    )
-
     fun calc(inputExpression: String): Var? {
-        val expression = inputExpression
+        var expression = inputExpression
             .replace(Constants.SPACES.toRegex(), "")
-            .trim()
 
+        while (expression.contains("(")) {
+            expression = deleteBrackets(expression)
+        }
 
         val operands: MutableList<String> = Regex(Constants.MATH_OPERATIONS)
             .split(expression) as MutableList<String>
         val operations: MutableList<String> = ArrayList()
+
         Regex(Constants.MATH_OPERATIONS).findAll(expression)
             .forEach { operations.add(it.value) }
 
         while (operations.isNotEmpty()) {
             val index: Int = getPriority(operations)
-            val left = operands.removeAt(index)
+            val leftOperand = operands.removeAt(index)
             val operation = operations.removeAt(index)
-            val right = operands.removeAt(index)
-            val result: Var? = calcOneOperation(left, operation, right)
+            val rightOperand = operands.removeAt(index)
+            val result: Var? = calcOneOperation(leftOperand, operation, rightOperand)
             operands.add(index, result.toString())
         }
+        return varCreator.createVar(operands[0])
+    }
 
-        return varCreator.createVar(operands[0]);
+    private fun deleteBrackets(expression: String): String {
+        val bracketGroup = Regex(Constants.EXPRESSION_IN_BRACKETS).find(expression)
+        return if (bracketGroup != null) {
+            val withoutBracketGroup = Regex(Constants.ROUND_BRACKETS)
+                .replace(bracketGroup.value, "")
+            expression.replace(bracketGroup.value, calc(withoutBracketGroup).toString())
+        } else expression
     }
 
     private fun calcOneOperation(
@@ -47,9 +49,8 @@ class Parser(private var repository: VarMapRepository, private var varCreator: V
         rightOperand: String
     ): Var? {
         val right = varCreator.createVar(rightOperand)
-
-        if (operation == "=") {
-            return repository.save(leftOperand, right)
+        when (operation) {
+            "=" -> return repository.save(leftOperand, right)
         }
         val left = varCreator.createVar(leftOperand)
         when (operation) {
@@ -59,19 +60,5 @@ class Parser(private var repository: VarMapRepository, private var varCreator: V
             "/" -> return left?.div(right)
         }
         throw CalcException("not found operation $operation")
-    }
-
-    private fun getPriority(operations: MutableList<String>): Int {
-        var indexOperation = -1
-        var bestPriority = -1
-
-        operations.forEachIndexed { index, it ->
-            if (priorityMap[it]!! > bestPriority) {
-                indexOperation = index
-                bestPriority = priorityMap[it]!!
-            }
-        }
-
-        return indexOperation
     }
 }

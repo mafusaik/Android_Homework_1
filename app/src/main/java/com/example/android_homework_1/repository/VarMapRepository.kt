@@ -16,3 +16,4 @@ class VarMapRepository : Repository {
         return vars[name]
     }
 }
+

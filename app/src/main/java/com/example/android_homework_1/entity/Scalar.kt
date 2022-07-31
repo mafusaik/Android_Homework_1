@@ -16,40 +16,24 @@ class Scalar constructor() : Var() {
         this.value = strScalar.toDouble()
     }
 
-    override fun add(other: Var?): Var? {
-        return if (other is Scalar) {
-            val result = this.value + other.value
-            Scalar(result)
-        } else {
-            other?.add(this)
-        }
+    override fun add(other: Var?): Var? = when (other) {
+        is Scalar -> Scalar(this.value + other.value)
+        else -> other?.add(this)
     }
 
-    override fun sub(other: Var?): Var? {
-        return if (other is Scalar) {
-            val result = this.value - other.value
-            Scalar(result)
-        } else {
-            other?.sub(this)?.mul(Scalar(-1.0))
-        }
+    override fun sub(other: Var?): Var? = when (other) {
+        is Scalar -> Scalar(this.value - other.value)
+        else -> other?.sub(this)?.mul(Scalar(-1.0))
     }
 
-    override fun mul(other: Var?): Var? {
-        return if (other is Scalar) {
-            val result = this.value * other.value
-            Scalar(result)
-        } else {
-            other?.mul(this)
-        }
+    override fun mul(other: Var?): Var? = when (other) {
+        is Scalar -> Scalar(this.value * other.value)
+        else -> other?.mul(this)
     }
 
-    override fun div(other: Var?): Var? {
-        return if (other is Scalar) {
-            val result = this.value / other.value
-            Scalar(result)
-        } else {
-            super.div(other)
-        }
+    override fun div(other: Var?): Var? = when (other) {
+        is Scalar -> Scalar(this.value / other.value)
+        else -> other?.div(this)
     }
 
     override fun toString(): String {
