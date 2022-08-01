@@ -7,7 +7,7 @@ class VarMapRepository : Repository {
 
     private var vars = hashMapOf<String, Var?>()
 
-   override fun save(name: String, value: Var?): Var? {
+    override fun save(name: String, value: Var?): Var? {
         vars[name] = value
         return value
     }
