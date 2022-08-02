@@ -8,10 +8,10 @@ import com.example.android_homework_1.repository.VarMapRepository
 
 class VarCreator(private var repository: VarMapRepository) {
 
-    fun createVar(stringVar: String): Var? = when {
+    fun createVar(stringVar: String): Var = when {
         stringVar.matches(Regex(Constants.SCALAR)) -> Scalar(stringVar)
-        else -> if (repository.get(stringVar) == null) {
-            throw CalcException("incorrect string $stringVar")
-        } else repository.get(stringVar)
+        else -> repository.get(stringVar)?.let {
+            repository.get(stringVar)
+        } ?: throw CalcException("incorrect string $stringVar")
     }
 }
