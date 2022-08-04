@@ -17,10 +17,10 @@ fun calcOneOperation(
     }
     val left = varCreator.createVar(leftOperand)
     when (operation) {
-        "+" -> return left?.add(right)
-        "-" -> return left?.sub(right)
-        "*" -> return left?.mul(right)
-        "/" -> return left?.div(right)
+        "+" -> return left.plus(right)
+        "-" -> return left.minus(right)
+        "*" -> return left.times(right)
+        "/" -> return left.div(right)
     }
     throw CalcException("not found operation $operation")
 }

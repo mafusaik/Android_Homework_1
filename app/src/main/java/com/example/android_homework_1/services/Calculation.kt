@@ -8,7 +8,7 @@ fun calc(
     inputExpression: String,
     varCreator: VarCreator,
     repository: VarMapRepository
-): Var? {
+): Var {
     var expression = inputExpression
         .replace(Constants.SPACES.toRegex(), "")
 
@@ -17,8 +17,8 @@ fun calc(
     }
 
     val operands: MutableList<String> = Regex(Constants.MATH_OPERATIONS)
-        .split(expression) as MutableList<String>
-    val operations: MutableList<String> = ArrayList()
+        .split(expression).toMutableList()
+    val operations = mutableListOf<String>()
 
     Regex(Constants.MATH_OPERATIONS).findAll(expression)
         .forEach { operations.add(it.value) }

@@ -5,7 +5,7 @@ import com.example.android_homework_1.interfaces.Repository
 
 class VarMapRepository : Repository {
 
-    private var vars = hashMapOf<String, Var?>()
+    private var vars = mutableMapOf<String, Var?>()
 
     override fun save(name: String, value: Var?): Var? {
         vars[name] = value

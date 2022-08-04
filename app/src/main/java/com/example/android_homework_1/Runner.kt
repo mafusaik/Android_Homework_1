@@ -7,3 +7,5 @@ fun main() {
     parser()
     println("app finished")
 }
+
+//D=((5+2.22)/3-(7+3.5*7)/2) = -13.343333

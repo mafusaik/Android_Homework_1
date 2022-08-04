@@ -9,13 +9,13 @@ private val priorityMap: Map<String, Int> = mapOf(
     "/" to 2
 )
 
-fun getPriority(operations: MutableList<String>): Int {
+fun getPriority(operations: List<String>): Int {
     var indexOperation = -1
     var bestPriority = -1
     operations.forEachIndexed { index, it ->
-        if (priorityMap[it]!! > bestPriority) {
+        if (priorityMap.getValue(it) > bestPriority) {
             indexOperation = index
-            bestPriority = priorityMap[it]!!
+            bestPriority = priorityMap.getValue(it)
         }
     }
     return indexOperation
